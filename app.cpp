@@ -7,12 +7,18 @@ const int BOARD_SIZE = 8;
 
 enum Piece {
   Empty,
-  Pawn,
-  Rook,
-  Knight,
-  Bishop,
-  Queen,
-  King
+  WPawn,
+  WRook,
+  WKnight,
+  WBishop,
+  WQueen,
+  WKing,
+  BPawn,
+  BRook,
+  BKnight,
+  BBishop,
+  BQueen,
+  BKing
 };
 
 struct Square {
@@ -44,62 +50,104 @@ public:
   void init() {
     // Initialize the pieces on the board
     for (int i = 0; i < BOARD_SIZE; i++) {
-      board[1][i] = Pawn;
-      board[6][i] = Pawn;
+      board[1][i] = BPawn;
+      board[6][i] = WPawn;
     }
-    board[0][0] = board[0][7] = Rook;
-    board[7][0] = board[7][7] = Rook;
-    board[0][1] = board[0][6] = Knight;
-    board[7][1] = board[7][6] = Knight;
-    board[0][2] = board[0][5] = Bishop;
-    board[7][2] = board[7][5] = Bishop;
-    board[0][3] = Queen;
-    board[7][3] = Queen;
-    board[0][4] = King;
-    board[7][4] = King;
+    board[0][0] = board[0][7] = BRook;
+    board[7][0] = board[7][7] = WRook;
+    board[0][1] = board[0][6] = BKnight;
+    board[7][1] = board[7][6] = WKnight;
+    board[0][2] = board[0][5] = BBishop;
+    board[7][2] = board[7][5] = WBishop;
+    board[0][3] = BQueen;
+    board[7][3] = WQueen;
+    board[0][4] = BKing;
+    board[7][4] = WKing;
   }
 
   void print() {
-    cout << "  A B C D E F G H" << endl;
+    cout << "  A  B  C  D  E  F  G  H" << endl;
     for (int i = 0; i < BOARD_SIZE; i++) {
       cout << 8 - i << " ";
       for (int j = 0; j < BOARD_SIZE; j++) {
         switch (board[i][j]) {
           case Empty:
-            cout << "- ";
+            cout << "-- ";
             break;
-          case Pawn:
-            cout << "P ";
+          case WPawn:
+            cout << "WP ";
             break;
-          case Rook:
-            cout << "R ";
+          case WRook:
+            cout << "WR ";
             break;
-          case Knight:
-            cout << "N ";
+          case WKnight:
+            cout << "WN ";
             break;
-          case Bishop:
-            cout << "B ";
+          case WBishop:
+            cout << "WB ";
             break;
-          case Queen:
-            cout << "Q ";
+          case WQueen:
+            cout << "WQ ";
             break;
-          case King:
-            cout << "K ";
+          case WKing:
+            cout << "WK ";
             break;
-        }
+          case BPawn:
+            cout << "BP ";
+            break;
+          case BRook:
+            cout << "BR ";
+            break;
+          case BKnight:
+            cout << "BN ";
+            break;
+          case BBishop:
+            cout << "BB ";
+            break;
+          case BQueen:
+            cout << "BQ ";
+            break;
+          case BKing:
+            cout << "BK ";
+            break;
+        } 
       }
       cout << endl;
     }
   }
 
+Piece getPiece(Square square) {
+    return board[square.row][square.col];
+}
+
 bool isValidMove(Move move) {
-      // logic for validating a move
-      return true; // for now, just return true
-    }
+      Square fromSquare;
+      Square toSquare;
+
+      fromSquare.row = move.from_row;
+      fromSquare.col = move.from_col;
+
+      toSquare.row = move.to_row;
+      toSquare.col = move.to_col;
+
+      Piece piece = getPiece(fromSquare);
+      
+      switch(piece) {
+        case Empty:
+        return false;
+        break;
+      }
+      return true; 
+}
     
-  void makeMove(Move move) {
+  bool makeMove(Move move) {
+      if (!isValidMove(move)) {
+        return false;
+      }
+
       board[move.to_row][move.to_col] = board[move.from_row][move.from_col];
       board[move.from_row][move.from_col] = Empty;
+      return true;
     }
 
 
@@ -111,8 +159,13 @@ public:
 
   ChessAI(ChessBoard& chessBoard) : chessBoard(chessBoard) {}
 
+  bool isValidMove(Move move) {
+    return true;
+  }
+
   void move() {
   int moveMade = false;
+
   while (!moveMade) {
     cout << "Enter your move in algebraic notation (e.g. e2e4): ";
     string moveInput;
@@ -125,13 +178,13 @@ public:
     int toFile = moveInput[2] - 'a';
     int toRank = 8 - (moveInput[3] - '0');
     Move move(fromRank, fromFile, toRank, toFile);
-    if (isValidMove(move)) {
-      chessBoard.makeMove(move);
+
+    if (chessBoard.makeMove(move)) {
       moveMade = true;
     } else {
       cout << "Invalid move. Try again." << endl;
     }
-  }
+  } 
 
 
 }
@@ -148,8 +201,9 @@ int main() {
   chessBoard.print();
 
   ChessAI chessAI(chessBoard);
+
+  while (true) {
   chessAI.move();
-  system("cls");
-  chessBoard.print();
+  chessBoard.print(); }
 }
  
