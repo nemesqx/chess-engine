@@ -21,6 +21,12 @@ enum Piece {
   BKing
 };
 
+enum PieceType {
+  Black,
+  White,
+  EmptyPieceType
+};
+
 struct Square {
   int row;
   int col;
@@ -120,6 +126,45 @@ Piece getPiece(Square square) {
     return board[square.row][square.col];
 }
 
+PieceType pieceType(Piece piece) { 
+  if (piece == WKing || piece == WKnight || piece == WRook || piece == WPawn || piece == WQueen || piece == WBishop) {
+    return White;
+  } else if (piece == BKing || piece == BKnight || piece == BRook || piece == BPawn || piece == BQueen || piece == BBishop) {
+    return Black; 
+  } else {
+    return EmptyPieceType;
+  }
+}
+
+bool canCapture(Piece piece, Piece toCapture) { 
+  if (pieceType(piece) == White && (pieceType(toCapture) == Black || pieceType(toCapture) == EmptyPieceType)) {
+    return true;
+  } else if (pieceType(piece) == Black && (pieceType(toCapture) == White || pieceType(toCapture) == EmptyPieceType)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool canMove2Squares(Square square) {
+  Piece piece = getPiece(square);
+  if (piece == WPawn) {
+    if (square.row == 2) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (piece == BPawn) {
+    if (square.row == 7) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
 bool isValidMove(Move move) {
       Square fromSquare;
       Square toSquare;
@@ -130,13 +175,60 @@ bool isValidMove(Move move) {
       toSquare.row = move.to_row;
       toSquare.col = move.to_col;
 
+      int dirX = toSquare.col - fromSquare.col;
+      int dirY = fromSquare.row - toSquare.row;
+
       Piece piece = getPiece(fromSquare);
+      Piece moveToPiece = getPiece(toSquare);
       
       switch(piece) {
+
         case Empty:
         return false;
         break;
+
+        case WKnight: case BKnight:
+        if (dirY == 2 && dirX == 1 || dirY == 2 && dirX==-1 || dirY == -2 && dirX == 1 || dirY == -2 && dirX == -1) {
+          return true;
+        } 
+        else {
+          return false;
+        }
+
+        break;
+
+        case WPawn: 
+        std::cout << dirX << " , " << dirY;
+          if (dirX == 1 && dirY == 0 && moveToPiece == Empty) {
+             return true;
+          } 
+        
+          else if (dirX == 0 && dirY == 2) {
+             Square squareToCheck;
+             squareToCheck.row = fromSquare.row;
+             squareToCheck.col = fromSquare.col + 2;
+
+             Square squareToCheck2;
+             squareToCheck.row = fromSquare.row;
+             squareToCheck.col = fromSquare.col + 2;
+
+             if (canMove2Squares(fromSquare) && getPiece(squareToCheck) == Empty && getPiece(squareToCheck2) == Empty) { 
+                 std::cout << "canMove";
+                 return true;
+              }
+        }
+
+        else if (dirX == 1 && dirY == 1 || dirX == 1 && dirY == -1 && moveToPiece != Empty && canCapture(piece, moveToPiece)) {
+          return true;
+        } 
+
+        else {
+          return false;
+        }
+        
+        break;
       }
+      std::cout << "got here";
       return true; 
 }
     
