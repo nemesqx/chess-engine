@@ -198,8 +198,8 @@ bool isValidMove(Move move) {
         break;
 
         case WPawn: 
-        std::cout << dirX << " , " << dirY;
-          if (dirX == 1 && dirY == 0 && moveToPiece == Empty) {
+
+          if (dirX == 0 && dirY == 1 && moveToPiece == Empty) {
              return true;
           } 
         
@@ -218,7 +218,7 @@ bool isValidMove(Move move) {
               }
         }
 
-        else if (dirX == 1 && dirY == 1 || dirX == 1 && dirY == -1 && moveToPiece != Empty && canCapture(piece, moveToPiece)) {
+        else if ((dirX == 1 && dirY == 1 || dirX == -1 && dirY == 1) && moveToPiece != Empty && canCapture(piece, moveToPiece)) {
           return true;
         } 
 
@@ -228,7 +228,7 @@ bool isValidMove(Move move) {
         
         break;
       }
-      std::cout << "got here";
+      std::cout << "no case resolved";
       return true; 
 }
     
@@ -298,4 +298,3 @@ int main() {
   chessAI.move();
   chessBoard.print(); }
 }
- 
