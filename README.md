@@ -10,3 +10,5 @@ A simple chess engine I'm coding to use as barebones for a chess AI project. Pla
 git clone https://github.com/nemesqx/chess-engine.git
 make run
 ```
+## Credits
+[Chess assets](https://joszs.itch.io/chess-pack) created by [joszs](https://joszs.itch.io/)
