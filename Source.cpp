@@ -215,7 +215,7 @@ bool isValidMove(Move move) {
                 displacement1 = -displacement1;
                 displacement2 = -displacement2;
              }
-             Square squareToCheck;
+             Square squareToCheck; 
              squareToCheck.row = fromSquare.row - displacement1;
              squareToCheck.col = fromSquare.col;
 
@@ -230,7 +230,7 @@ bool isValidMove(Move move) {
               }
         }
 
-        else if ((dirX == 1 && dirY == 1 || dirX == -1 && dirY == 1) && moveToPiece != Empty && canCapture(piece, moveToPiece)) {
+        else if ( ( ( (dirX == 1 && dirY == 1 || dirX == -1 && dirY == 1) && blackOrWhite(piece) == White) || ((dirX== 1 && dirY == -1 || dirX == -1 && dirY == -1) && blackOrWhite(piece) == Black)) && moveToPiece != Empty && canCapture(piece, moveToPiece)) {
           return true;
         } 
 
@@ -240,8 +240,9 @@ bool isValidMove(Move move) {
         
         break;
       }
+      
       std::cout << "no case resolved";
-      return true; 
+      return true;  
 }
     
   bool makeMove(Move move) {
