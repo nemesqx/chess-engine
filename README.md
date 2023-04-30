@@ -8,6 +8,7 @@ A simple chess engine I'm coding to use as barebones for a chess AI project. Pla
 ## Installation
 ```bash
 git clone https://github.com/nemesqx/chess-engine.git
+cd chess-engine
 make run
 ```
 ## Credits
