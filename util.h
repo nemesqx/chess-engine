@@ -1,5 +1,4 @@
 #define UTIL_H
-#include "ChessPiece.h"
 
 struct Square {
   int row;

@@ -1,6 +1,6 @@
 #include <iostream>
-#include "ChessPiece.h"
-#include "Util.h"
+#include "piece.h"
+#include "util.h"
 
 using namespace std;
 
@@ -17,7 +17,6 @@ public:
   }
 
   void init() {
-    // Initialize the pieces on the board
     for (int i = 0; i < BOARD_SIZE; i++) {
       board[1][i] = BPawn;
       board[6][i] = WPawn;
