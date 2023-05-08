@@ -143,6 +143,10 @@ bool isValidMove(Move move) {
       Piece piece = getPiece(fromSquare);
       Piece moveToPiece = getPiece(toSquare);
       PieceType pieceType = blackOrWhite(piece);
+
+      if (canCapture(piece, moveToPiece) == false) {
+        return false;
+      }
       
       switch(piece) {
 
@@ -161,7 +165,7 @@ bool isValidMove(Move move) {
         break;
 
         case WPawn: case BPawn: 
-          if ((dirX == 0 && dirY == 1 && moveToPiece == Empty && pieceType == White) || (dirX == 0 && dirY == -1 && moveToPiece == Empty && pieceType == Black)) {
+        if ((dirX == 0 && dirY == 1 && moveToPiece == Empty && pieceType == White) || (dirX == 0 && dirY == -1 && moveToPiece == Empty && pieceType == Black)) {
              return true;
           } 
           else if ( (dirX == 0 && dirY == 2 && pieceType == White) || (dirX == 0 && dirY == -2 && pieceType == Black) ) {
@@ -195,6 +199,15 @@ bool isValidMove(Move move) {
           return false;
         }
         
+        break;
+
+        case BBishop: case WBishop:
+        if (abs(dirX) != abs(dirY)) {
+          return false; 
+        } else {
+          return true;
+        }
+
         break;
       }
       

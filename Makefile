@@ -1,24 +1,23 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -pedantic -std=c++17
+CXXFLAGS = -Wall -Wextra -std=c++11
 
+SRCS = Source.cpp board.h opponentAI.h piece.h renderer.h util.h
+OBJS = Source.o
+TARGET = chess-engine.out
 SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
-EXECUTABLE = chess-engine.out
-SOURCE_FILES = Source.cpp
-OBJECT_FILES = $(SOURCE_FILES:.cpp=.o)
+all: $(TARGET)
 
-.PHONY: all clean
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(SFML_LIBS)
 
-all: $(EXECUTABLE)
-
-$(EXECUTABLE): $(OBJECT_FILES)
-	$(CXX) $^ -o $@ $(SFML_LIBS)
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+Source.o: Source.cpp board.h opponentAI.h piece.h renderer.h util.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(EXECUTABLE) $(OBJECT_FILES)
+	rm -f $(OBJS) $(TARGET)
 
-run: $(EXECUTABLE)
-	./$(EXECUTABLE)
+run: $(TARGET)
+	./$(TARGET)
+
+.PHONY: all clean run
